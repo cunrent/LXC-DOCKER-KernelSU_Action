@@ -1,4 +1,4 @@
-name: 高端机 谷歌cla334444.0.5
+name: 高端机 谷歌c1221.1la334444.0.5
 on:
   workflow_dispatch:
 
@@ -90,15 +90,12 @@ jobs:
     - name: 开始编译内核
       run: |
         cd $GITHUB_WORKSPACE/kernel_workspace/android-kernel
-        echo "# CONFIG_COMPAT_VDSO is not set" >> arch/arm64/configs/vendor/vince-perf_defconfig
         make O=out ARCH=arm64 vendor/vince-perf_defconfig
+        scripts/config --file out/.config --disable COMPAT_VDSO
+        make O=out ARCH=arm64 olddefconfig
         export PATH=$GITHUB_WORKSPACE/kernel_workspace/clang-aosp/bin:$PATH
-        make -j$(nproc --all) O=out ARCH=arm64 ${{ env.KERNEL_CONFIG }}
-        if [ ${{env.LLVM_CONFIG}}=y ]; then
         make -j$(nproc --all) O=out ARCH=arm64 CC="ccache clang" CXX=clang++ CLANG_TRIPLE="aarch64-linux-gnu-" CROSS_COMPILE="aarch64-linux-gnu-" CROSS_COMPILE_ARM32="arm-linux-gnueabi-" LLVM=1
-        else
-        make -j$(nproc --all) CC="ccache clang" CXX=clang++ O=out ARCH=arm64 CLANG_TRIPLE="aarch64-linux-gnu-" CROSS_COMPILE="aarch64-linux-gnu-" CROSS_COMPILE_ARM32="arm-linux-gnueabi-"
-        fi
+                
                 
     - name: 准备打包内核
       run: |       
