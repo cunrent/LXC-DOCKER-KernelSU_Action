@@ -1,4 +1,4 @@
-name: 高端机 谷歌cla33.0.5
+name: 高端机 谷歌cla334444.0.5
 on:
   workflow_dispatch:
 
@@ -36,9 +36,9 @@ jobs:
     - name: 下载Clang-aosp编译器
       run: |
         cd $GITHUB_WORKSPACE/kernel_workspace
-        wget https://cdn.kernel.org/pub/tools/llvm/files/llvm-20.1.8-x86_64.tar.xz
-        tar -xf llvm-20.1.8-x86_64.tar.xz
-        mv llvm-20.1.8-x86_64 clang-aosp
+        wget https://cdn.kernel.org/pub/tools/llvm/files/llvm-21.1.8-x86_64.tar.xz
+        tar -xf llvm-21.1.8-x86_64.tar.xz
+        mv llvm-21.1.8-x86_64 clang-aosp
                       
     - name: 下载内核源码
       run: |
@@ -90,6 +90,8 @@ jobs:
     - name: 开始编译内核
       run: |
         cd $GITHUB_WORKSPACE/kernel_workspace/android-kernel
+        echo "# CONFIG_COMPAT_VDSO is not set" >> arch/arm64/configs/vendor/vince-perf_defconfig
+        make O=out ARCH=arm64 vendor/vince-perf_defconfig
         export PATH=$GITHUB_WORKSPACE/kernel_workspace/clang-aosp/bin:$PATH
         make -j$(nproc --all) O=out ARCH=arm64 ${{ env.KERNEL_CONFIG }}
         if [ ${{env.LLVM_CONFIG}}=y ]; then
