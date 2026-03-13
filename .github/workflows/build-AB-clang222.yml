@@ -38,7 +38,7 @@ jobs:
         cd $GITHUB_WORKSPACE/kernel_workspace
         wget https://cdn.kernel.org/pub/tools/llvm/files/llvm-20.1.8-x86_64.tar.xz
         tar -xf llvm-20.1.8-x86_64.tar.xz
-        mv llvm-18.1.8-x86_64 clang-aosp
+        mv llvm-20.1.8-x86_64 clang-aosp
                       
     - name: 下载内核源码
       run: |
